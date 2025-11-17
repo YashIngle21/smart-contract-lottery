@@ -43,7 +43,7 @@ contract Raffle is VRFConsumerBaseV2Plus {
     }
 
     /* Events */
-   
+    event RaffleEntered(address indexed player);
     event RaffleWinnerPicked(address indexed winner);
 
     /* State variables */
@@ -73,7 +73,7 @@ contract Raffle is VRFConsumerBaseV2Plus {
         s_raffleState = RaffleState.OPEN;
     }
 
-    event RaffleEnter(address indexed player);
+    
 
     function enterRaffle() external payable {
         // require(msg.value >= i_entranceFee, "Not enough value sent");
@@ -89,7 +89,7 @@ contract Raffle is VRFConsumerBaseV2Plus {
         s_players.push(payable(msg.sender));
         // Emit an event when we update a dynamic array or mapping
         // Named events with the function name reversed
-        emit RaffleEnter(msg.sender); 
+        emit RaffleEntered(msg.sender); 
     }
 
     /**
@@ -163,6 +163,14 @@ contract Raffle is VRFConsumerBaseV2Plus {
 
     function getEntranceFee() public view returns (uint256) {
         return i_entranceFee;
+    }
+
+    function getRaffleState() external view returns(RaffleState){
+        return s_raffleState;
+    }
+
+    function getPlayer(uint256 indexOfPlayer) external view returns(address){
+        return s_players[indexOfPlayer];
     }
 
      
